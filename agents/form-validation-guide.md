@@ -184,13 +184,13 @@ For custom validation (e.g., unique email check):
 ```typescript
 // features/users/services/users.service.ts
 import { Injectable, Inject, ConflictException } from '@nestjs/common';
-import { IUserRepository, USER_REPOSITORY } from '@/domain/repositories/user-repository.interface';
+import { UserRepositoryInterface, USER_REPOSITORY } from '@/domain/repositories/user-repository.interface';
 
 @Injectable()
 export class UsersService {
   constructor(
     @Inject(USER_REPOSITORY)
-    private readonly userRepository: IUserRepository,
+    private readonly userRepository: UserRepositoryInterface,
   ) {}
 
   async create(data: CreateUserDto): Promise<User> {
