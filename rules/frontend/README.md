@@ -2,11 +2,25 @@
 
 This folder contains all documentation and guides for frontend development using React, Vite, TypeScript, Zod, TanStack Query, and Tailwind CSS, including end-to-end testing with Playwright.
 
+## ⚠️ MANDATORY REQUIREMENTS
+
+Before starting development, understand these critical requirements:
+
+1. **E2E Testing**: All Playwright tests MUST use Page Object Model (POM)
+   - Direct page interactions in test files are prohibited
+   - See [Playwright E2E Guide](./playwright-e2e-guide.md) for details
+
+2. **Modal & Dropdown Management**: All modals and dropdowns MUST support ESC key with modal stack
+   - ESC key must close the last opened modal/dropdown (LIFO)
+   - All select dropdowns must register in the modal stack
+   - See [Modal Stack Guide](./modal-stack-guide.md) for implementation
+
 ## Documentation Files
 
 - **[frontend-development-guide.md](./frontend-development-guide.md)** - Complete guide for React + Vite + TypeScript development
 - **[form-validation-guide.md](./form-validation-guide.md)** - Form handling and validation with Zod
-- **[playwright-e2e-guide.md](./playwright-e2e-guide.md)** - End-to-end testing with Playwright
+- **[playwright-e2e-guide.md](./playwright-e2e-guide.md)** - End-to-end testing with Playwright (Page Object Model required)
+- **[modal-stack-guide.md](./modal-stack-guide.md)** - Modal and dropdown ESC key handling with stack management
 
 ## Quick Start
 

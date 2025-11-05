@@ -16,7 +16,8 @@ node-react-rules/
 │       ├── README.md
 │       ├── frontend-development-guide.md
 │       ├── form-validation-guide.md
-│       └── playwright-e2e-guide.md
+│       ├── playwright-e2e-guide.md
+│       └── modal-stack-guide.md
 └── README.md
 ```
 
@@ -42,6 +43,21 @@ This repository contains structured documentation for developing modern full-sta
 - **Client State**: React Context API
 - **E2E Testing**: Playwright
 
+## ⚠️ Critical Frontend Requirements
+
+Before starting frontend development, review these **MANDATORY** requirements:
+
+1. **Page Object Model for E2E Tests**
+   - All Playwright tests MUST use Page Object Model
+   - Direct page interactions in test files are prohibited
+   - See [Playwright E2E Guide](./rules/frontend/playwright-e2e-guide.md)
+
+2. **Modal Stack Management**
+   - All modals and dropdowns MUST support ESC key to close
+   - MUST implement modal stack (LIFO - Last In, First Out)
+   - Select dropdowns must register in the stack
+   - See [Modal Stack Guide](./rules/frontend/modal-stack-guide.md)
+
 ## 📚 Documentation
 
 ### Backend Documentation
@@ -60,7 +76,8 @@ Navigate to [`rules/frontend/`](./rules/frontend/) for complete frontend develop
 
 - **[Frontend Development Guide](./rules/frontend/frontend-development-guide.md)** - React, Vite, TypeScript, and component architecture
 - **[Form Validation Guide](./rules/frontend/form-validation-guide.md)** - Form handling with Zod validation schemas
-- **[Playwright E2E Guide](./rules/frontend/playwright-e2e-guide.md)** - End-to-end testing with Playwright
+- **[Playwright E2E Guide](./rules/frontend/playwright-e2e-guide.md)** - End-to-end testing with Playwright ⚠️ POM required
+- **[Modal Stack Guide](./rules/frontend/modal-stack-guide.md)** - Modal/dropdown ESC key handling ⚠️ Required
 
 [View Frontend README →](./rules/frontend/README.md)
 

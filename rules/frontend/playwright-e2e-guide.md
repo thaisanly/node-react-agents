@@ -4,6 +4,16 @@
 
 This guide covers end-to-end (E2E) testing for React applications using Playwright. Playwright enables reliable cross-browser testing with powerful automation capabilities.
 
+## ⚠️ MANDATORY REQUIREMENT
+
+**All E2E tests MUST use the Page Object Model (POM) pattern.**
+
+Direct page interactions in test files are NOT allowed. This ensures:
+- **Maintainability**: Changes to UI only require updating the Page Object
+- **Reusability**: Page Objects can be shared across multiple tests
+- **Readability**: Tests describe user workflows, not implementation details
+- **Type Safety**: Full TypeScript support with autocomplete
+
 ## Table of Contents
 
 - [Setup](#setup)
@@ -149,38 +159,33 @@ frontend/
 
 ## Writing Tests
 
-### Basic Test Structure
+### ❌ WRONG: Direct Page Interactions (DO NOT USE)
+
+The following pattern is NOT allowed in our codebase:
 
 ```typescript
 import { test, expect } from '@playwright/test';
 
-test.describe('User Authentication', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-  });
+// ❌ BAD: Direct page interactions in test
+test('should login with valid credentials', async ({ page }) => {
+  await page.goto('/login');
+  await page.getByLabel('Email').fill('user@example.com'); // ❌ Direct interaction
+  await page.getByLabel('Password').fill('password123');   // ❌ Direct interaction
+  await page.getByRole('button', { name: 'Login' }).click(); // ❌ Direct interaction
 
-  test('should login with valid credentials', async ({ page }) => {
-    // Arrange
-    await page.getByLabel('Email').fill('user@example.com');
-    await page.getByLabel('Password').fill('password123');
-
-    // Act
-    await page.getByRole('button', { name: 'Login' }).click();
-
-    // Assert
-    await expect(page).toHaveURL('/dashboard');
-    await expect(page.getByText('Welcome back')).toBeVisible();
-  });
-
-  test('should show error with invalid credentials', async ({ page }) => {
-    await page.getByLabel('Email').fill('wrong@example.com');
-    await page.getByLabel('Password').fill('wrongpass');
-    await page.getByRole('button', { name: 'Login' }).click();
-
-    await expect(page.getByText('Invalid credentials')).toBeVisible();
-  });
+  await expect(page).toHaveURL('/dashboard');
 });
 ```
+
+**Why is this bad?**
+- If the UI changes (e.g., label text), you must update ALL tests
+- No reusability across tests
+- Difficult to maintain
+- No abstraction of page logic
+
+### ✅ CORRECT: Using Page Object Model (REQUIRED)
+
+All tests MUST use Page Objects. See the [Page Object Model](#page-object-model) section below for implementation details.
 
 ### Using Test IDs
 
@@ -287,6 +292,39 @@ test('should login successfully', async ({ page }) => {
 ```
 
 ## Best Practices
+
+### 0. ALWAYS Use Page Object Model (MANDATORY)
+
+**Every test MUST use Page Objects. Direct page interactions are prohibited.**
+
+✅ **CORRECT:**
+```typescript
+// e2e/tests/auth/login.spec.ts
+import { test, expect } from '@playwright/test';
+import { LoginPage } from '../../pages/LoginPage';
+import { DashboardPage } from '../../pages/DashboardPage';
+
+test('should login successfully', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const dashboardPage = new DashboardPage(page);
+
+  await loginPage.goto();
+  await loginPage.login('user@example.com', 'password123');
+
+  await dashboardPage.expectWelcomeMessage('Welcome back');
+});
+```
+
+❌ **INCORRECT:**
+```typescript
+// ❌ DO NOT DO THIS
+test('should login successfully', async ({ page }) => {
+  await page.goto('/login');
+  await page.getByLabel('Email').fill('user@example.com'); // ❌ Direct interaction
+  await page.getByLabel('Password').fill('password123');
+  await page.getByRole('button', { name: 'Login' }).click();
+});
+```
 
 ### 1. Use Meaningful Locators
 
