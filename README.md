@@ -38,7 +38,8 @@ This repository contains structured documentation for developing modern full-sta
 - **Language**: TypeScript (strict mode)
 - **Styling**: Tailwind CSS
 - **Form Handling**: React Hook Form + Zod
-- **State Management**: Zustand / React Context
+- **Data Fetching**: TanStack Query (React Query)
+- **Client State**: React Context API
 - **E2E Testing**: Playwright
 
 ## 📚 Documentation
@@ -91,7 +92,7 @@ npm create vite@latest frontend -- --template react-ts
 cd frontend
 
 # Install dependencies
-npm install react-router-dom zod @hookform/resolvers react-hook-form zustand
+npm install react-router-dom zod @hookform/resolvers react-hook-form @tanstack/react-query
 
 # Setup Tailwind CSS
 npm install -D tailwindcss postcss autoprefixer
@@ -205,15 +206,27 @@ async createUser(@Body() createUserDto: CreateUserDto) {
 }
 ```
 
-**Frontend (API Client):**
+**Frontend (TanStack Query Hook):**
 ```typescript
-const createUser = async (data: CreateUserSchema) => {
-  const response = await fetch('/api/users', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+const useCreateUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: CreateUserSchema) => {
+      const response = await fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error('Failed to create user');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
   });
-  return response.json();
 };
 ```
 

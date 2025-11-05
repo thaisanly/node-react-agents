@@ -1,6 +1,6 @@
 # Frontend Rules Documentation
 
-This folder contains all documentation and guides for frontend development using React, Vite, TypeScript, Zod, and Tailwind CSS, including end-to-end testing with Playwright.
+This folder contains all documentation and guides for frontend development using React, Vite, TypeScript, Zod, TanStack Query, and Tailwind CSS, including end-to-end testing with Playwright.
 
 ## Documentation Files
 
@@ -18,7 +18,8 @@ This folder contains all documentation and guides for frontend development using
 - **Form Validation**: Zod with react-hook-form
 - **Styling**: Tailwind CSS
 - **UI Components**: shadcn/ui
-- **State Management**: React Context API / Zustand
+- **Data Fetching**: TanStack Query (React Query)
+- **Client State**: React Context API (for simple state)
 - **E2E Testing**: Playwright
 
 ### Project Setup
@@ -31,7 +32,7 @@ This folder contains all documentation and guides for frontend development using
 
 2. **Install Core Dependencies**
    ```bash
-   npm install react-router-dom zod @hookform/resolvers react-hook-form zustand
+   npm install react-router-dom zod @hookform/resolvers react-hook-form @tanstack/react-query
    ```
 
 3. **Setup Tailwind CSS**
@@ -54,6 +55,7 @@ This folder contains all documentation and guides for frontend development using
 
 - **Type Safety**: Strict TypeScript with proper typing
 - **Form Validation**: Zod schemas with type inference
+- **Server State Management**: TanStack Query for API data fetching, caching, and synchronization
 - **Component Composition**: Reusable, testable components
 - **Feature-based Organization**: Code organized by features
 - **E2E Testing**: Comprehensive Playwright tests for user workflows
@@ -85,12 +87,85 @@ frontend/
 └── playwright.config.ts     # Playwright configuration
 ```
 
+## Data Fetching with TanStack Query
+
+TanStack Query (formerly React Query) is the recommended solution for managing server state:
+
+### Key Features
+- **Automatic Caching**: Intelligent caching and cache invalidation
+- **Background Refetching**: Keep data fresh automatically
+- **Optimistic Updates**: Instant UI updates before server confirmation
+- **Request Deduplication**: Automatic deduplication of requests
+- **Pagination & Infinite Scroll**: Built-in support
+- **DevTools**: Excellent debugging experience
+
+### Basic Setup
+
+```typescript
+// src/main.tsx
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      retry: 1,
+    },
+  },
+});
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <QueryClientProvider client={queryClient}>
+    <App />
+  </QueryClientProvider>
+);
+```
+
+### Usage Example
+
+```typescript
+// src/features/users/api/useUsers.ts
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+
+export const useUsers = () => {
+  return useQuery({
+    queryKey: ['users'],
+    queryFn: async () => {
+      const response = await fetch('/api/users');
+      if (!response.ok) throw new Error('Failed to fetch users');
+      return response.json();
+    },
+  });
+};
+
+export const useCreateUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: CreateUserData) => {
+      const response = await fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error('Failed to create user');
+      return response.json();
+    },
+    onSuccess: () => {
+      // Invalidate and refetch users list
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+  });
+};
+```
+
 ## Testing Strategy
 
 ### Unit Tests (Vitest + Testing Library)
 - Component testing
 - Hook testing
 - Utility function testing
+- TanStack Query hooks testing
 
 ### E2E Tests (Playwright)
 - User workflow testing
