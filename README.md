@@ -1,12 +1,12 @@
-# Node React Agents - Full Stack Development Guides
+# Node React Rules - Full Stack Development Guides
 
 Comprehensive documentation and development guides for building full-stack applications with Node.js (NestJS) backend and React frontend.
 
 ## 📁 Project Structure
 
 ```
-node-react-agents/
-├── agents/
+node-react-rules/
+├── rules/
 │   ├── backend/          # Backend development documentation
 │   │   ├── README.md
 │   │   ├── backend-development-guide.md
@@ -45,23 +45,23 @@ This repository contains structured documentation for developing modern full-sta
 
 ### Backend Documentation
 
-Navigate to [`agents/backend/`](./agents/backend/) for complete backend development guides:
+Navigate to [`rules/backend/`](./rules/backend/) for complete backend development guides:
 
-- **[Backend Development Guide](./agents/backend/backend-development-guide.md)** - NestJS best practices, project structure, and clean architecture patterns
-- **[Repository Pattern Guide](./agents/backend/repository-pattern-guide.md)** - Implementing data access layer abstraction
-- **[Testing Guide](./agents/backend/testing-guide.md)** - Unit testing, integration testing, and E2E testing strategies
+- **[Backend Development Guide](./rules/backend/backend-development-guide.md)** - NestJS best practices, project structure, and clean architecture patterns
+- **[Repository Pattern Guide](./rules/backend/repository-pattern-guide.md)** - Implementing data access layer abstraction
+- **[Testing Guide](./rules/backend/testing-guide.md)** - Unit testing, integration testing, and E2E testing strategies
 
-[View Backend README →](./agents/backend/README.md)
+[View Backend README →](./rules/backend/README.md)
 
 ### Frontend Documentation
 
-Navigate to [`agents/frontend/`](./agents/frontend/) for complete frontend development guides:
+Navigate to [`rules/frontend/`](./rules/frontend/) for complete frontend development guides:
 
-- **[Frontend Development Guide](./agents/frontend/frontend-development-guide.md)** - React, Vite, TypeScript, and component architecture
-- **[Form Validation Guide](./agents/frontend/form-validation-guide.md)** - Form handling with Zod validation schemas
-- **[Playwright E2E Guide](./agents/frontend/playwright-e2e-guide.md)** - End-to-end testing with Playwright
+- **[Frontend Development Guide](./rules/frontend/frontend-development-guide.md)** - React, Vite, TypeScript, and component architecture
+- **[Form Validation Guide](./rules/frontend/form-validation-guide.md)** - Form handling with Zod validation schemas
+- **[Playwright E2E Guide](./rules/frontend/playwright-e2e-guide.md)** - End-to-end testing with Playwright
 
-[View Frontend README →](./agents/frontend/README.md)
+[View Frontend README →](./rules/frontend/README.md)
 
 ## 🚀 Quick Start
 
@@ -81,7 +81,7 @@ npm install -D prisma
 npx prisma init
 ```
 
-See [Backend README](./agents/backend/README.md) for detailed setup instructions.
+See [Backend README](./rules/backend/README.md) for detailed setup instructions.
 
 ### Frontend Setup
 
@@ -101,7 +101,7 @@ npx tailwindcss init -p
 npm init playwright@latest
 ```
 
-See [Frontend README](./agents/frontend/README.md) for detailed setup instructions.
+See [Frontend README](./rules/frontend/README.md) for detailed setup instructions.
 
 ## 🏗️ Architecture Principles
 
@@ -173,8 +173,8 @@ frontend/
 - **Visual Regression**: Screenshot testing with Playwright
 
 See the dedicated testing guides:
-- [Backend Testing Guide](./agents/backend/testing-guide.md)
-- [Frontend Playwright E2E Guide](./agents/frontend/playwright-e2e-guide.md)
+- [Backend Testing Guide](./rules/backend/testing-guide.md)
+- [Frontend Playwright E2E Guide](./rules/frontend/playwright-e2e-guide.md)
 
 ## 📖 Key Concepts
 

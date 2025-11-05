@@ -1,4 +1,4 @@
-# Backend Agent Documentation
+# Backend Rules Documentation
 
 This folder contains all documentation and guides for backend development using NestJS, PostgreSQL, and clean architecture patterns.
 

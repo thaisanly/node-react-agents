@@ -1,4 +1,4 @@
-# Frontend Agent Documentation
+# Frontend Rules Documentation
 
 This folder contains all documentation and guides for frontend development using React, Vite, TypeScript, Zod, and Tailwind CSS, including end-to-end testing with Playwright.
 
