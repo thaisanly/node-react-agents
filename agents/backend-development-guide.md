@@ -132,7 +132,7 @@ export class UpdateUserData {
 // domain/repositories/user-repository.interface.ts
 import { User, CreateUserData, UpdateUserData } from '../entities/user.entity';
 
-export interface IUserRepository {
+export interface UserRepositoryInterface {
   findById(id: string): Promise<User | null>;
   findByEmail(email: string): Promise<User | null>;
   findAll(skip?: number, take?: number): Promise<User[]>;
@@ -154,11 +154,11 @@ Implement repositories with database-specific logic (Prisma example):
 // infrastructure/database/repositories/prisma-user-repository.ts
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { IUserRepository } from '@/domain/repositories/user-repository.interface';
+import { UserRepositoryInterface } from '@/domain/repositories/user-repository.interface';
 import { User, CreateUserData, UpdateUserData } from '@/domain/entities/user.entity';
 
 @Injectable()
-export class PrismaUserRepository implements IUserRepository {
+export class PrismaUserRepository implements UserRepositoryInterface {
   constructor(private prisma: PrismaService) {}
 
   async findById(id: string): Promise<User | null> {
@@ -230,7 +230,7 @@ Services contain business logic and use repository interfaces:
 ```typescript
 // features/users/services/users.service.ts
 import { Injectable, Inject, NotFoundException, ConflictException } from '@nestjs/common';
-import { IUserRepository, USER_REPOSITORY } from '@/domain/repositories/user-repository.interface';
+import { UserRepositoryInterface, USER_REPOSITORY } from '@/domain/repositories/user-repository.interface';
 import { User, CreateUserData, UpdateUserData } from '@/domain/entities/user.entity';
 import * as bcrypt from 'bcrypt';
 
@@ -238,7 +238,7 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
   constructor(
     @Inject(USER_REPOSITORY)
-    private readonly userRepository: IUserRepository,
+    private readonly userRepository: UserRepositoryInterface,
   ) {}
 
   async findById(id: string): Promise<User> {

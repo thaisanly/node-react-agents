@@ -74,14 +74,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException, ConflictException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
-  IUserRepository,
+  UserRepositoryInterface,
   USER_REPOSITORY,
 } from '@/domain/repositories/user-repository.interface';
 import { User } from '@/domain/entities/user.entity';
 
 describe('UsersService', () => {
   let service: UsersService;
-  let repository: jest.Mocked<IUserRepository>;
+  let repository: jest.Mocked<UserRepositoryInterface>;
 
   // Mock data
   const mockUser: User = {
@@ -95,7 +95,7 @@ describe('UsersService', () => {
 
   beforeEach(async () => {
     // Create mock repository
-    const mockRepository: jest.Mocked<IUserRepository> = {
+    const mockRepository: jest.Mocked<UserRepositoryInterface> = {
       findById: jest.fn(),
       findByEmail: jest.fn(),
       findAll: jest.fn(),
